@@ -1,12 +1,15 @@
+"""
+Base class for communicating with a webservice. Set USE_CHARLES_PROXY to true to redirect & inspect traffic going
+through an HTTP proxy (e.g. Charles) 
+"""
+
 import cookielib
-import urllib
-import urllib2
-import zlib
 import json
 import random
+import urllib
+import urllib2
 import urlparse
-import random
-import time
+import zlib
 
 class ServiceFetcher:
 
@@ -14,8 +17,7 @@ class ServiceFetcher:
 
     def fetchUrl(self, url, requestType='GET', data={}, headers={}):
         """
-        Fetches the url with the given headers and parameters 
-        requestType GET|POST
+        Fetches the url with the given headers and parameters. requestType can be either GET or POST
         """
 
         # Configure Proxy if any
@@ -32,7 +34,7 @@ class ServiceFetcher:
             opener.addheaders = [(header, headers[header])]
         urllib2.install_opener(opener) 
         
-        # Encode the data and either set it in the URL (Get) or in the body (POST)
+        # Encode the data and either set it in the URL (GET) or in the body (POST)
         encoded_data = urllib.urlencode(data) 
         if requestType == 'GET':
             if len(encoded_data) > 0:
