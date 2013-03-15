@@ -17,7 +17,8 @@ class ServiceFetcher:
 
     def fetchUrl(self, url, requestType='GET', data={}, headers={}):
         """
-        Fetches the url with the given headers and parameters. requestType can be either GET or POST
+        Fetches the url with the given headers and parameters. requestType can be either GET or POST.
+        Returns a tuple of the response text (uncompressed) and the response headers.
         """
 
         # Configure Proxy if any
@@ -44,7 +45,6 @@ class ServiceFetcher:
             response = opener.open(url, encoded_data)
 
         response_text = response.read()
-
         # Process response before returning it
         resp_headers = response.info().getheaders
         if resp_headers('Content-Encoding') != []:
@@ -53,7 +53,12 @@ class ServiceFetcher:
         if resp_headers('Content-Type') != []:
             if  'utf8' in resp_headers('Content-Type')[0]:
                 response_text = response_text.decode('utf-8')     
-        
-        return response_text
+        response_headers = dict(response.headers.items())
+        # Eval the cookie string into a dict if there is one
+        if response_headers.has_key('set-cookie'):
+            response_set_cookie =  dict(map(lambda x: ( x.split('=')[0] , '' if len(x.split('=')) == 1 else x.split('=')[1] ), response_headers['set-cookie'].split(';')))
+            response_headers['set-cookie'] = response_set_cookie
+
+        return response_text, response_headers
 
 
