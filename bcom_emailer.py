@@ -13,13 +13,12 @@ class BComEmailer(service_fetcher.ServiceFetcher):
         self.url = 'http://www.boston.com/emtaf/'
         
     def send_email(self, to_email, from_email):
-        bsUrl = 'http://www.boston.com/business/healthcare/2013/03/14/fda-probes-new-pancreas-risks-with-diabetes-drugs/ibY7Jr4mWy9dX6hUFpDk2I/story.html'
         data = {
             'sender_name'      : '',
             'sender_email'     : from_email,
             'recipient_email'  : to_email,
             'message'          : random.choice(['This is so interesting', 'Thought about you babe', 'Read this OMG!!!', "Thought i'd share", 'Here it goes honey']),
-            'story_url'        : bsUrl,
+            'story_url'        : 'http://www.boston.com/business/healthcare/2013/03/14/fda-probes-new-pancreas-risks-with-diabetes-drugs/ibY7Jr4mWy9dX6hUFpDk2I/story.html',
             }    
         contentLength = len(urllib.urlencode(data))
         headers = {
