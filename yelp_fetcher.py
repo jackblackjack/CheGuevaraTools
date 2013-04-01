@@ -1,6 +1,6 @@
 """
-YelpFinder finds things, kinky things, juicy things, scary things in your wife's Yelp account. And her thighs. 
-Before using this code, please write some tests. And then some more tests to test the tests of the test-code - hey, itt's a dangerous world! 
+YelpFetcher finds things, kinky things, juicy things, scary things in your wife's Yelp account. And her thighs. 
+Before using this code, please write some tests. And then some more tests to test the tests of the test-code - hey, it's a dangerous world! 
 Are you wearing your seatbealt boy? 
 """
 import BeautifulSoup
@@ -100,70 +100,6 @@ class YelpFetcher(service_fetcher.ServiceFetcher):
             'url'       : business_url,
             'url_yelp'  : url_yelp,
             }
-
-    def scrape_establishment_page(self, url_yelp):
-        """
-        Scrapes off address, phone, establishment url, and any additional information from the establishment's page on Yelp 
-        as inspired by http://open.spotify.com/track/57ssHTXfSV3vDiotx6Wh6a
-        WARNING: This code will NOT make any money. It HAS to be PEP-FUCKYOU compliant, or else, no-one will acquire your startup boy!!! 
-        That is THE ONLY way, as dictated by the Holly-Hipster-Inquisition ;)
-        """
-        business_address = None
-        business_info = None
-        business_phone = None
-        business_url = None
-        try:
-            resp, headers = yHndlr.fetchUrl(url_yelp)
-            shndlr = BeautifulSoup.BeautifulSoup(resp)
-
-            # Extract info
-            business_phone = shndlr.findAll('span',{'id':'bizPhone'})[0].text
-            business_url = shndlr.findAll('div', {'id':'bizUrl'})[0].text 
-            business_info = shndlr.findAll('div', {'id':'bizAdditionalInfo'})[0]
-            business_info_html = business_info.prettify().replace('\n','')
-            business_address = ' '.join([shndlr.findAll('address')[0].findAll('span')[i].text for i in range(3)])
-        except:
-            pass
-        
-        return {
-            'address'   : business_address,
-            'info_html' : business_info_html,
-            'phone'     : business_phone,
-            'url'       : business_url,
-            'url_yelp'  : url_yelp,
-            }
-
-    
-    def scrape_establishment_page(self, url_yelp):
-        """
-        Scrapes off address, phone, establishment url, and any additional information from the establishment's page on Yelp as inspired by
-        http://open.spotify.com/track/57ssHTXfSV3vDiotx6Wh6a
-        """
-        business_address = None
-        business_info = None
-        business_phone = None
-        business_url = None
-        try:
-            resp, headers = yHndlr.fetchUrl(url_yelp)
-            shndlr = BeautifulSoup.BeautifulSoup(resp)
-
-            # Extract info
-            business_phone = shndlr.findAll('span',{'id':'bizPhone'})[0].text
-            business_url = shndlr.findAll('div', {'id':'bizUrl'})[0].text 
-            business_info = shndlr.findAll('div', {'id':'bizAdditionalInfo'})[0]
-            business_info_html = business_info.prettify().replace('\n','')
-            business_address = ' '.join([shndlr.findAll('address')[0].findAll('span')[i].text for i in range(3)])
-        except:
-            pass
-        
-        return {
-            'address'   : business_address,
-            'info_html' : business_info_html,
-            'phone'     : business_phone,
-            'url'       : business_url,
-            'url_yelp'  : url_yelp,
-            }
-
 
 # Main, as inspired by http://open.spotify.com/track/5O63wYSIIHmTbtcGQ3FqHo  
 if __name__ == '__main__':
