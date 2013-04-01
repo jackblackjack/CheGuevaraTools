@@ -1,19 +1,23 @@
 """
-Base class for communicating with a webservice. Set USE_CHARLES_PROXY to true to redirect & inspect traffic going
-through an HTTP proxy (e.g. Charles) 
+Base class for communicating with a webservice. 
 """
-
 import cookielib
 import json
-import random
+import socket
 import urllib
 import urllib2
 import urlparse
 import zlib
 
 class ServiceFetcher:
+    
+    def __init__(self, proxy=None):
+        """
+        
+        """
+        self.PROXY_URL = proxy # charlie brown 127.0.0.1:8888
+        socket.setdefaulttimeout(10) # set socket lib timeout 10s
 
-    USE_CHARLES_PROXY = False
 
     def fetchUrl(self, url, requestType='GET', data={}, headers={}):
         """
@@ -22,11 +26,11 @@ class ServiceFetcher:
         """
 
         # Configure Proxy if any
-        if ServiceFetcher.USE_CHARLES_PROXY:
-            proxies = {'http':'http://127.0.0.1:8888/'} 
-        else:
+        if self.PROXY_URL is None:
             proxies = {}
-
+        else:    
+            proxies = {'http' : self.PROXY_URL} 
+        
         cookiejar = cookielib.CookieJar()
         opener = urllib2.build_opener(urllib2.ProxyHandler(proxies), urllib2.HTTPCookieProcessor(cookiejar) ) 
 
@@ -40,9 +44,9 @@ class ServiceFetcher:
         if requestType == 'GET':
             if len(encoded_data) > 0:
                 url += "?%s" % encoded_data
-            response = opener.open(url)
+            response = urllib2.urlopen(url)
         elif requestType == 'POST':
-            response = opener.open(url, encoded_data)
+            response = urllib2.urlopen(url, encoded_data)
 
         response_text = response.read()
         # Process response before returning it
