@@ -11,7 +11,7 @@ import time
 import pdb
 import random
 
-class YelpFinder(service_fetcher.ServiceFetcher):
+class YelpFetcher(service_fetcher.ServiceFetcher):
 
     def list_some_establishments(self, town_query, offset=0):
         """
@@ -167,7 +167,7 @@ class YelpFinder(service_fetcher.ServiceFetcher):
 
 # Main, as inspired by http://open.spotify.com/track/5O63wYSIIHmTbtcGQ3FqHo  
 if __name__ == '__main__':
-    yHndlr = YelpFinder()
+    yHndlr = YelpFetcher()
     establishments = yHndlr.list_all_establishments('holliston, ma')
     for establishment in establishments:
         print establishment
