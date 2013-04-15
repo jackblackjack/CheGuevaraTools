@@ -1,7 +1,5 @@
 """
-YelpFetcher finds things, kinky things, juicy things, scary things in your wife's Yelp account. And her thighs. 
-Before using this code, please write some tests. And then some more tests to test the tests of the test-code - hey, it's a dangerous world! 
-Are you wearing your seatbealt boy? 
+YelpFetcher finds things, bad things, dark things, scary things in Yelp account.. 
 """
 import BeautifulSoup
 import colorama
