@@ -3,6 +3,8 @@ Base class for communicating with a webservice.
 """
 import cookielib
 import json
+import random
+import time
 import socket
 import urllib
 import urllib2
@@ -11,12 +13,13 @@ import zlib
 
 class ServiceFetcher:
     
-    def __init__(self, proxy=None):
+    def __init__(self, proxy=None, proxy_protocol='http'):
         """
         
         """
         self.PROXY_URL = proxy # charlie brown 127.0.0.1:8888
-        socket.setdefaulttimeout(10) # set socket lib timeout 10s
+        self.PROXY_PROTOCOL = proxy_protocol # http or https
+        socket.setdefaulttimeout(30) # set socket lib timeout
 
 
     def fetchUrl(self, url, requestType='GET', data={}, headers={}):
@@ -25,11 +28,14 @@ class ServiceFetcher:
         Returns a tuple of the response text (uncompressed) and the response headers.
         """
 
+        
+        time.sleep(random.randint(1,10))
+
         # Configure Proxy if any
         if self.PROXY_URL is None:
             proxies = {}
         else:    
-            proxies = {'http' : self.PROXY_URL} 
+            proxies = { self.PROXY_PROTOCOL : self.PROXY_URL} 
         
         cookiejar = cookielib.CookieJar()
         opener = urllib2.build_opener(urllib2.ProxyHandler(proxies), urllib2.HTTPCookieProcessor(cookiejar) ) 
@@ -54,9 +60,11 @@ class ServiceFetcher:
         if resp_headers('Content-Encoding') != []:
             if  'gzip' in resp_headers('Content-Encoding')[0]:
                 response_text = zlib.decompress(response_body, 16+zlib.MAX_WBITS)    
+
         if resp_headers('Content-Type') != []:
             if  'utf8' in resp_headers('Content-Type')[0]:
                 response_text = response_text.decode('utf-8')     
+        
         response_headers = dict(response.headers.items())
         # Eval the cookie string into a dict if there is one
         if response_headers.has_key('set-cookie'):
