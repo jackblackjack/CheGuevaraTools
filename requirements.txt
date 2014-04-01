@@ -1,0 +1,5 @@
+BeautifulSoup==3.2.1
+colorama==0.2.5
+html2text==3.200.3
+-e git+https://github.com/charlierguo/gmail.git@82372b27121234c4973509b50b30f10447f44127#egg=gmail-master
+
