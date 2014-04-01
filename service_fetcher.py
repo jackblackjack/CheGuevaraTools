@@ -22,13 +22,11 @@ class ServiceFetcher:
         socket.setdefaulttimeout(30) # set socket lib timeout
 
 
-    def fetchUrl(self, url, requestType='GET', data={}, headers={}):
+    def fetchURL(self, url, requestType='GET', data={}, headers={}):
         """
         Fetches the url with the given headers and parameters. requestType can be either GET or POST.
         Returns a tuple of the response text (uncompressed) and the response headers.
-        """
-
-        
+        """        
         time.sleep(random.randint(1,10))
 
         # Configure Proxy if any

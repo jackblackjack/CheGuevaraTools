@@ -4,6 +4,7 @@ Extracts all proxies from the zip files in path_to_zips and returns them in a li
    ProxyLoader.load_proxies('path_to_zips')
 
 """
+import os
 import zipfile
 
 class ProxyLoader:

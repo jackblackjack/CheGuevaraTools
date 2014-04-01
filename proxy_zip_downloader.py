@@ -1,5 +1,5 @@
 """
-Logs into the specified gmail account and downloads the latest 3 HideMyAss Zip 
+Logs into the specified gmail account and downloads the latest 2 HideMyAss Zip 
 proxy files to abs_path_zips. Any other zip file in that folder is removed.
 
    python proxy_zip_downloader.py gmail_username gmail_pass abs_path_to_fldr
@@ -32,7 +32,7 @@ class ProxyZipDownloader:
         date_zip_file = datetime.datetime.strptime(file_name, \
                                                            'proxylist-%m-%d-%y.zip')
         date_today = datetime.datetime.now()
-        return (date_today - date_zip_file).days >= 3
+        return (date_today - date_zip_file).days >= 2
 
     def fetch_files(self):
         self.__remove_all_zips__()
