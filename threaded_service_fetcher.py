@@ -69,8 +69,7 @@ class ThreadedServiceFetcher(threading.Thread):
 class ThreadedServiceFetcherManager:
 
     def __load_proxies__(self, path_to_proxies):
-        pch = proxy_loader.ProxyChecker(path_to_proxies)
-        good_proxies = pch.check_proxies('http://www.pinterest.com/ohjoy')
+        good_proxies = ProxyLoader.load_proxies(path_to_proxies)
         proxies_to_use = [None, None, None, None, None]
         proxies_to_use.extend(good_proxies)
         return proxies_to_use

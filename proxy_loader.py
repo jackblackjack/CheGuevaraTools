@@ -1,7 +1,7 @@
 """
 Extracts all proxies from the zip files in path_to_zips and returns them in a list
 
-   ProxyLoader.get_proxies('path_to_zips')
+   ProxyLoader.load_proxies('path_to_zips')
 
 """
 import zipfile
@@ -9,7 +9,7 @@ import zipfile
 class ProxyLoader:
 
     @staticmethod
-    def get_proxies(path_to_zips):
+    def load_proxies(path_to_zips):
         proxies = set()
         zip_files = filter(lambda zfile: zfile.endswith('zip'),\
                                os.listdir(path_to_zips))
@@ -22,5 +22,5 @@ class ProxyLoader:
         return list(proxies)
 
 if __name__ == '__main__':
-    ProxyLoader.get_proxies('')
+    ProxyLoader.load_proxies('')
     
