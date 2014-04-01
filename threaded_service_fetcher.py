@@ -1,11 +1,16 @@
 """
-Subclass of thread, fetches a list of urls using ServiceFetcher and a specified proxy.
-Uses the passed method to scrape data into a hash. Returns a hash(*H1) with the urls fetched as keys and the hash returned by the scraper as value.
+ThreadedServiceFetcher is a subclass of thread. It fetches a list of urls using 
+ServiceFetcher and a specified proxy, scrapes the data into a hash and then returns
+a parent hash with the urls fetched as keys and the hash returned by the scraper as
+values:
 
-   ThreadedServiceFetcher([url1, url2,..], 'proxy_ip:port', scraper_class, path_proxies_zips)
+   ThreadedServiceFetcher([url1, url2], 'proxy_ip:port', scraper_class*, path_proxies_zips)
 
-scraper_class must define "scrape"
+ThreadedServiceFetcherManager breaks down the list of urls into k groups, instantiatesk ThreadedServiceFetcher objects and assigns each one of such groups. Each  
 
+   ThreadedServiceFetcherManager([url1, url2, url3,..], scraper_class, path_to_proxies)
+
+*scraper_class must define "scrape"
 """
 
 import colorama
