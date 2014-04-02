@@ -13,14 +13,15 @@ import zlib
 
 class ServiceFetcher:
     
+    TIMEOUT = 15
+
     def __init__(self, proxy=None, proxy_protocol='http'):
         """
         
         """
         self.PROXY_URL = proxy # charlie brown 127.0.0.1:8888
         self.PROXY_PROTOCOL = proxy_protocol # http or https
-        socket.setdefaulttimeout(30) # set socket lib timeout
-
+        socket.setdefaulttimeout(self.TIMEOUT) # set socket lib timeout. Also set inurllib2.urlopen
 
     def fetchURL(self, url, requestType='GET', data={}, headers={}):
         """
@@ -48,9 +49,9 @@ class ServiceFetcher:
         if requestType == 'GET':
             if len(encoded_data) > 0:
                 url += "?%s" % encoded_data
-            response = urllib2.urlopen(url)
+            response = urllib2.urlopen(url, timeout=self.TIMEOUT)
         elif requestType == 'POST':
-            response = urllib2.urlopen(url, encoded_data)
+            response = urllib2.urlopen(url, encoded_data, timeout=self.TIMEOUT)
 
         response_text = response.read()
         # Process response before returning it
