@@ -85,6 +85,8 @@ class ThreadedServiceFetcherManager:
     def __init__(self, urls, scraper_class, path_to_proxies, headers={}):
         self.scraper_class = scraper_class
         self.proxies = self.__load_proxies__(path_to_proxies)
+        if len(urls) > len(self.proxies):
+            self.proxies = self.proxies[:len(urls) - 1]
         self.num_threads = len(self.proxies)
         self.proxies = cycle(self.proxies)
 
