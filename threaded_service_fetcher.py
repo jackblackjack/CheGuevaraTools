@@ -85,22 +85,21 @@ class ThreadedServiceFetcherManager:
     def __init__(self, urls, scraper_class, path_to_proxies, headers={}):
         self.scraper_class = scraper_class
         self.proxies = self.__load_proxies__(path_to_proxies)
-        if len(urls) > len(self.proxies):
-            self.proxies = self.proxies[:len(urls) - 1]
+        if len(urls) < len(self.proxies):
+            self.proxies = self.proxies[:int(len(urls) / 2) ]
         self.num_threads = len(self.proxies)
         self.proxies = cycle(self.proxies)
-
         self.num_to_process = len(urls)
-
         n = int(self.num_to_process / float(self.num_threads))
         self.groups = [urls[i:i+n] for i in range(0, len(urls), n)]  
+        self.headers = headers
              
     def threaded_fetch(self):
         start_time = datetime.datetime.now()
         analyzers = []
         for group in self.groups:
             analyzer = ThreadedServiceFetcher(group, self.proxies.next(),\
-                self.scraper_class, 'GET', {}, headers)
+                self.scraper_class, 'GET', {}, self.headers)
             analyzer.setDaemon(True)
             analyzer.start()
             analyzers.append(analyzer)
