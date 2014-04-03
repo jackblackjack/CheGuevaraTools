@@ -13,5 +13,7 @@ A multithreaded scraper with support for HTTP proxies and custom headers.
 ```python example.py```
 
 
+```ulimit -n 1024```
+
 Miguel Menchu
 mmenchu@gmail.com
