@@ -12,8 +12,13 @@ A multithreaded scraper with support for HTTP proxies and custom headers.
 3. Run the example. This will curl ~900 URLS using around 300 proxies.
 ```python example.py```
 
+### Notes
 
-```ulimit -n 1024```
+* Eventhough a custom scraper can be passed to ThreadedServiceFetcherManager it's 
+  probably best to just return the html without parsing it and scrape off the data
+  in a different script using multiple processes. 
+ 
+* Run ```ulimit -n 1024```
 
 Miguel Menchu
 mmenchu@gmail.com
