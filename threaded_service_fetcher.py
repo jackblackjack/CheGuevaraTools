@@ -25,11 +25,11 @@ from itertools import cycle
 
 class ThreadedServiceFetcher(threading.Thread):
 
-    @staticmethod
-    def log(message, color):
-        print color + message + colorama.Fore.WHITE
+    def log(self, message, color):
+        print color + "Thread #%s: " % self.thread_index + message + colorama.Fore.WHITE
     
-    def __init__(self, urls, proxy, scraper_class, req_method='GET', post_data={}, req_headers={}):
+    def __init__(self, index, urls, proxy, scraper_class, req_method='GET', post_data={}, req_headers={}):
+        self.thread_index = index
         self.urls = urls
         self.proxy = proxy
         self.data = {}
@@ -48,7 +48,7 @@ class ThreadedServiceFetcher(threading.Thread):
             except:
                 message = "%s/%s - Connection to [%s] via proxy %s failed " % \
                     (index, len(self.urls), url, self. proxy) 
-                ThreadedServiceFetcher.log(message, colorama.Fore.MAGENTA)
+                self.log(message, colorama.Fore.MAGENTA)
                 # Set URL response to None and move on to the next one
                 self.data[url] = None
                 continue
@@ -59,13 +59,13 @@ class ThreadedServiceFetcher(threading.Thread):
                 self.data[url] = scraped_data
                 message = "%s/%s - Scraping [%s] succeeded" % \
                     (index, len(self.urls), url) 
-                ThreadedServiceFetcher.log(message, colorama.Fore.GREEN) 
+                self.log(message, colorama.Fore.GREEN) 
 
             except:
                 exc_message = traceback.format_exc()
                 message = "%s/%s - Scraping %s failed: %s" % \
                     (index, len(self.urls), url, exc_message)
-                ThreadedServiceFetcher.log(message, colorama.Fore.MAGENTA)
+                self.log(message, colorama.Fore.MAGENTA)
                 # Too many of these? Might need to update scraper method 
                 self.data[url] = None
                 continue
@@ -86,7 +86,7 @@ class ThreadedServiceFetcherManager:
         self.scraper_class = scraper_class
         self.proxies = self.__load_proxies__(path_to_proxies)
         if len(urls) < len(self.proxies):
-            self.proxies = self.proxies[:int(len(urls) / 2) ]
+            self.proxies = self.proxies[:len(urls) - 1]
         self.num_threads = len(self.proxies)
         self.proxies = cycle(self.proxies)
         self.num_to_process = len(urls)
@@ -97,10 +97,11 @@ class ThreadedServiceFetcherManager:
     def threaded_fetch(self):
         start_time = datetime.datetime.now()
         analyzers = []
-        for group in self.groups:
-            analyzer = ThreadedServiceFetcher(group, self.proxies.next(),\
+        for index, group in enumerate(self.groups):
+            analyzer = ThreadedServiceFetcher(index, group, self.proxies.next(),\
                 self.scraper_class, 'GET', {}, self.headers)
-            analyzer.setDaemon(True)
+            #analyzer.setDaemon(True)
+            analyzer.daemon = True
             analyzer.start()
             analyzers.append(analyzer)
         for index, analyzer in enumerate(analyzers):
