@@ -8,5 +8,5 @@ setup(name='CheGuevaraTools',
       author=' ',
       author_email='mmenchu@gmail.com',
       url='https://github.com/mmenchu/CheGuevaraTools',
-      py_modules = ['Scraper']
+      package_dir = {'CheGuevaraTools',''}
      )
