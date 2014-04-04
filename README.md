@@ -3,8 +3,8 @@
 ### Scraper 
 A multithreaded scraper with support for HTTP proxies and custom headers. 
 
-1. Install dependencies
-```pip install -r requirements.txt```
+1. Download and install dependencies ```pip install -r requirements.txt``` or
+   Install as library ```pip install git+https://github.com/mmenchu/CheGuevaraTools.git```
 
 2. Download HydeMyAss Proxy Zip files to a tmp folder
 ```python proxy_zip_downloader.py gmail_usrname gmail_pass path_tmp_fldr```
