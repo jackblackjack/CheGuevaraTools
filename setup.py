@@ -9,4 +9,5 @@ setup(name='CheGuevaraTools',
       author_email='mmenchu@gmail.com',
       url='https://github.com/mmenchu/CheGuevaraTools',
       packages=[],
+      package_dir = {'':'CheGuevaraTools'}
      )
