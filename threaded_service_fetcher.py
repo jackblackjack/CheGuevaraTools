@@ -33,6 +33,8 @@ class ThreadedServiceFetcher(threading.Thread):
         self.urls = urls
         self.proxy = proxy
         self.data = {}
+        # Initialize result data structure in case thread doesn't get to run
+        [self.data[url]=None for url in urls] 
         self.req_method = req_method
         self.post_data = post_data
         self.req_headers = req_headers
@@ -100,10 +102,15 @@ class ThreadedServiceFetcherManager:
         for index, group in enumerate(self.groups):
             analyzer = ThreadedServiceFetcher(index, group, self.proxies.next(),\
                 self.scraper_class, 'GET', {}, self.headers)
-            #analyzer.setDaemon(True)
             analyzer.daemon = True
-            analyzer.start()
+            # Thread might not start if there's already too many
+            # TODO: Better way to check this? 
+            try:
+                analyzer.start()
+            except:
+                pass
             analyzers.append(analyzer)
+                
         for index, analyzer in enumerate(analyzers):
             try:
                 analyzer.join()
