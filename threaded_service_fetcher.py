@@ -57,8 +57,8 @@ class ThreadedServiceFetcher(threading.Thread):
                 # Feed the response to the scraper method
                 scraped_data = self.scraper_class.scrape(response)
                 self.data[url] = scraped_data
-                message = "%s/%s - Scraping [%s] succeeded" % \
-                    (index, len(self.urls), url) 
+                message = "%s/%s - Scraping [%s] succeeded via proxy %s" % \
+                    (index, len(self.urls), url, self.proxy) 
                 self.log(message, colorama.Fore.GREEN) 
 
             except:
@@ -113,11 +113,10 @@ class ThreadedServiceFetcherManager:
         end_time = datetime.datetime.now()
         seconds_taken = (end_time - start_time).seconds
         num_records_saved = 0
-
+        
         # Ask each analyzer for its data
         data = [analyzer.get_data() for analyzer in analyzers]
         num_failures = sum([len(filter(lambda x: x is None, datum.values())) for datum in data])
         num_success = sum([len(filter(lambda x: not(x is None), datum.values())) for datum in data])
-
         return [data, num_failures, num_success]
         
