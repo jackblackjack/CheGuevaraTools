@@ -32,9 +32,8 @@ class ThreadedServiceFetcher(threading.Thread):
         self.thread_index = index
         self.urls = urls
         self.proxy = proxy
-        self.data = {}
         # Initialize result data structure in case thread doesn't get to run
-        [self.data[url]=None for url in urls] 
+        self.data = dict.fromkeys(urls)
         self.req_method = req_method
         self.post_data = post_data
         self.req_headers = req_headers
