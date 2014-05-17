@@ -36,7 +36,7 @@ class ProxyZipDownloader:
 
     def fetch_files(self):
         self.__remove_all_zips__()
-        for email in self.g.inbox().mail(sender="noreply@pl.hidemyass.com"):
+        for email in self.g.inbox().mail(sender="noreply@pl.hidemyass.com", after=datetime.datetime.now() - datetime.timedelta(days=3)):
             message = email.fetch()
 
             m1 = message.get_payload()[0]
